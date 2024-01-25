@@ -1,17 +1,33 @@
 import '../../style/main.css'
 import '../../style/Form.css'
 import Form from '../../components/Form/Form'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
+import { useSelector } from 'react-redux'
 
 function User() {
-    const [essai, setEssai] = useState("on")
+    const [profileChange, setProfileChange] = useState("off")
+    const [prenom, setPrenom] = useState(useSelector((state) => state.user.firstName))
+    const [nom, setNom] = useState(useSelector((state) => state.user.lastName))
+    const selectorFirstName = useSelector((state) => state.user.firstName)
+    const selectorLastName = useSelector((state) =>state.user.lastName)
+    const selectorToken = useSelector((state) => state.user.token )
+
+    useEffect(() => {
+        setPrenom(selectorFirstName)
+        setNom(selectorLastName)
+        setProfileChange("off")
+    }, [selectorFirstName, selectorLastName])
+    
+    const nameChange = (event) => {
+        setProfileChange("on")
+    }
 
     return (
         <main className="main bg-dark">
-            { essai==="on" ? <Form /> :  
+            { profileChange==="on" ? <Form /> :  
             <div className="header">
-                <h1>Welcome back<br />Tony Jarvis!</h1>
-                <button className="edit-button">Edit Name</button>
+                <h1>Welcome back<br />{prenom}&nbsp;&nbsp;{nom}</h1>
+                <button className="edit-button" onClick={nameChange}  >Edit Name</button>
             </div> }
             <h2 className="sr-only">Accounts</h2>
             <section className="account">

@@ -1,6 +1,6 @@
 import {BrowserRouter as Router, Route, Routes} from 'react-router-dom';
 import {Provider} from 'react-redux'
-import {store} from './redux/store'
+import {store} from './redux/reducers'
 import HomePage from './pages/HomePage/HomePage';
 import SignIn from './pages/SignIn/SignIn'
 import User from './pages/User/User'
@@ -11,7 +11,7 @@ import './App.css';
 function App() {
   return (
     <Router>
-      {/* <Provider store={store}> */}
+      <Provider store={store}>
         <Header />
         <Routes>
           <Route path="/" element={<HomePage />} />  
@@ -19,7 +19,7 @@ function App() {
           <Route path="/user" element={<User />} />
         </Routes>
         <Footer />
-      {/* </Provider> */}
+      </Provider>
     </Router>
   )
 }

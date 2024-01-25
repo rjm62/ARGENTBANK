@@ -56,7 +56,20 @@ body {
 
 .main-nav-item {
   text-decoration: none;
+  width: 350px;
   margin-right: 0.5rem;
+}
+
+.fa-sign-in , .fa-sign-out {
+  padding: 0 20px;
+}
+
+.errorText {
+  display: flex;
+  justify-content: flex-start;
+  padding: 0;
+  margin-top: -15px;
+  color:red
 }
 
 .main-nav-item:hover {
