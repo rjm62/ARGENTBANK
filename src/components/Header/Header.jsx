@@ -1,8 +1,15 @@
 import { Link } from 'react-router-dom'
 import argentBankLogo from '../../assets/images/argentBankLogo.png'
+import { useSelector} from 'react-redux'
+import { useEffect } from 'react'
 
 function Header() {
-const nomAChanger=1
+  const changeHeaderLogin = useSelector((data) => data.user.modificationRequested)
+  console.log(changeHeaderLogin)
+
+  useEffect(() => {
+   console.log(changeHeaderLogin)
+  },[changeHeaderLogin])
 
     return (
         <nav className="main-nav">
@@ -15,7 +22,7 @@ const nomAChanger=1
         <h1 className="sr-only">Argent Bank</h1>
       </Link>
       <div>
-        {nomAChanger===1 ?
+        {changeHeaderLogin=="off" ?
         <Link className="main-nav-item" to = "/sign-in">
           <i className="fa fa-user-circle"></i>
           <i className='fa fa-sign-in'>&nbsp;&nbsp;&nbsp;Sign In</i>

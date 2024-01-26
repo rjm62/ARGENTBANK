@@ -1,7 +1,7 @@
 import '../../style/Form.css'
 import { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { userToken, userFirstName,userLastName } from '../../redux/reducers'
+import { userToken, userFirstName,userLastName , userNameModification} from '../../redux/reducers'
 import { useNavigate } from 'react-router-dom'
 import { putNewName } from '../../service/dataAPI'
 
@@ -10,11 +10,12 @@ function Form() {
     const selectorFirstName = useSelector((state) => state.user.firstName)
     const [firstName, setFirstName] = useState(selectorFirstName)
     const [lastName, setLastName] = useState(useSelector((state) => state.user.lastName))
-    const [newFirstName, setNewFirstName] = useState(firstName)
-    const [newLastName, setNewLastName] = useState(lastName)
+    const [newFirstName, setNewFirstName] = useState()
+    const [newLastName, setNewLastName] = useState()
     const dispatch = useDispatch()
     const navigate = useNavigate()
     const selectorToken = useSelector((state) => state.user.token )
+
   
     const changeFirstName = (event) => {
         event.preventDefault()
@@ -39,6 +40,7 @@ function Form() {
         dispatch(userLastName(newLastName))
         const bodyInfo = {firstName: newFirstName, lastName: newLastName}
         putNewName(selectorToken, bodyInfo).then((data) => console.log(data.body))
+        dispatch(userNameModification("off"))
        
     }
 

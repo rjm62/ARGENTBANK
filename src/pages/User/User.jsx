@@ -2,7 +2,8 @@ import '../../style/main.css'
 import '../../style/Form.css'
 import Form from '../../components/Form/Form'
 import { useEffect, useState } from 'react'
-import { useSelector } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
+import { userNameModification } from '../../redux/reducers'
 
 function User() {
     const [profileChange, setProfileChange] = useState("off")
@@ -11,6 +12,7 @@ function User() {
     const selectorFirstName = useSelector((state) => state.user.firstName)
     const selectorLastName = useSelector((state) =>state.user.lastName)
     const selectorToken = useSelector((state) => state.user.token )
+    const dispatch = useDispatch()
 
     useEffect(() => {
         setPrenom(selectorFirstName)
@@ -20,6 +22,7 @@ function User() {
     
     const nameChange = (event) => {
         setProfileChange("on")
+        dispatch(userNameModification("on"))
     }
 
     return (

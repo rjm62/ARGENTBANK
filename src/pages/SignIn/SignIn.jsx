@@ -1,44 +1,46 @@
 import {useEffect, useState } from 'react'
 import {getToken, getProfile} from '../../service/dataAPI'
-import {userToken, userFirstName, userLastName} from '../../redux/reducers'
+import {userToken, userFirstName, userLastName, userNameModification} from '../../redux/reducers'
 import { useNavigate } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
 import '../../style/main.css'
 
 function SignIn() {
     const [emailUserName, setEmailUserName] = useState("0")
-    const [password, setPassword] = useState("0")
+    const [password, setPassword] = useState("")
     const [emailUserNameValidate, setEmailUserNameValidate] = useState("0")
     const [passwordValidate, setPasswordValidate] = useState("0")
     const [errorPasswordText, setErrorPasswordText] = useState()
     const [errorEmailUserNameText, setErrorEmailUserNameText] = useState()
-    const [token, setToken] = useState()
+    const [token, setToken] = useState("")
     const [status, setStatus] = useState()
+    const [message, setMessage] = useState()
 
     var bodyInfo = {email: emailUserName, password: password}
     var navigate = useNavigate()
     const dispatch = useDispatch()
+    dispatch(userNameModification("off"))
 
     const formSend = (event) => {
         event.preventDefault()
         //verification de l'adresse mail entrée dans le username, lorsqu'on clique sur entrée ou 'sign in'
         if(emailUserName==0) {
-            setErrorEmailUserNameText("vous devez entrer une adresse mail")
+            setErrorEmailUserNameText("veuillez entrer une adresse mail")
         }
         else if(emailUserNameValidate!==true && emailUserName!==0) {
             setErrorEmailUserNameText("adresse mail non correcte")
         }
       
         //vérification du mot de passe entré (11 caractères), lorsqu'on clique sur entrée ou 'sign in'
-        if(password==0) { 
-            setErrorPasswordText("vous devez entrer un password")  
+        if(password.split("").length===0) { 
+            setErrorPasswordText("veuillez entrer un password")  
         } 
-        else if(password.length!==0 && password.length!==11)  {
+        else if(password.split("").length!==0 && password.split("").length!==11)  {
             setErrorPasswordText("mot de passe non correct")
         }
         if ( passwordValidate===true) {
-            let tata ="2"
-        getToken(bodyInfo).then((data) => (setToken(data.body.token), setStatus(data.status)))    
+        getToken(bodyInfo).then((data) => (setStatus(data.status), setMessage(data.message))) 
+
         }
     }
 
@@ -59,21 +61,25 @@ function SignIn() {
         event.preventDefault()  
         setErrorPasswordText("")   
         let passwordLength = event.target.value
-        if(passwordLength.length===11) {
-            setPassword(event.target.value)   
+        setPassword(event.target.value)
+        if(passwordLength.split('').length===11) {  
             setPasswordValidate(true)
         }
-
     }
+
     useEffect(() => { 
-      if(token !==undefined) {
+      if(status=== 200) {
+        getToken(bodyInfo).then((data) => (setToken(data.body.token)))
         dispatch(userToken(token))
-        navigate('/user')
-        if(status===200) {
+        if(token!=="") {
+            setMessage("")
             getProfile(token).then((data) => (dispatch(userFirstName(data.body.firstName)), dispatch(userLastName(data.body.lastName))))
+            navigate('/user')
+        }
+        else {
         }
       }
-      }, [token]); 
+      }, [status, token]); 
   
 
     return (
@@ -97,9 +103,11 @@ function SignIn() {
                     </div>
                     <button to= "/user" className="sign-in-button">Sign In</button>     
                 </form>
+                {status!==200 ? <h3 className='errorAPIMessage'>{message}</h3> : null }
             </section>
       </main>
     )
 }
 
 export default SignIn
+

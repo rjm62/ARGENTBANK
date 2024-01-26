@@ -1,7 +1,6 @@
 import { userFirstName } from "../redux/reducers"
 
 export async function getToken (body) {
-    console.log(body)
     const response = await fetch('http://localhost:3001/api/v1/user/login', {
         method:"POST",
         headers: {"Content-Type": "application/json",},
