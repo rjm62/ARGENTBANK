@@ -1,6 +1,6 @@
 import {useEffect, useState } from 'react'
 import {getToken, getProfile} from '../../service/dataAPI'
-import {userToken, userFirstName, userLastName, userNameModification} from '../../redux/reducers'
+import {userToken, userFirstName, userLastName, userLogin} from '../../redux/reducers'
 import { useNavigate } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
 import '../../style/main.css'
@@ -19,7 +19,7 @@ function SignIn() {
     var bodyInfo = {email: emailUserName, password: password}
     var navigate = useNavigate()
     const dispatch = useDispatch()
-    dispatch(userNameModification("off"))
+    dispatch(userLogin("in"))
 
     const formSend = (event) => {
         event.preventDefault()
@@ -74,6 +74,7 @@ function SignIn() {
         if(token!=="") {
             setMessage("")
             getProfile(token).then((data) => (dispatch(userFirstName(data.body.firstName)), dispatch(userLastName(data.body.lastName))))
+            dispatch(userLogin("in"))
             navigate('/user')
         }
         else {

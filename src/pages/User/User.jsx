@@ -3,12 +3,12 @@ import '../../style/Form.css'
 import Form from '../../components/Form/Form'
 import { useEffect, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { userNameModification } from '../../redux/reducers'
+import { userFirstName, userLastName, userToken, userLogin } from '../../redux/reducers'
 
 function User() {
     const [profileChange, setProfileChange] = useState("off")
-    const [prenom, setPrenom] = useState(useSelector((state) => state.user.firstName))
-    const [nom, setNom] = useState(useSelector((state) => state.user.lastName))
+    const [prenom, setPrenom] = useState("")
+    const [nom, setNom] = useState("")
     const selectorFirstName = useSelector((state) => state.user.firstName)
     const selectorLastName = useSelector((state) =>state.user.lastName)
     const selectorToken = useSelector((state) => state.user.token )
@@ -21,18 +21,21 @@ function User() {
     }, [selectorFirstName, selectorLastName])
     
     const nameChange = (event) => {
+        event.preventDefault()
         setProfileChange("on")
-        dispatch(userNameModification("on"))
+        dispatch(userLogin("out"))
     }
 
     return (
-        <main className="main bg-dark">
-            { profileChange==="on" ? <Form /> :  
+        <main className="main bg-dark">,
+          {  profileChange==="on" ? <Form /> :  
             <div className="header">
                 <h1>Welcome back<br />{prenom}&nbsp;&nbsp;{nom}</h1>
                 <button className="edit-button" onClick={nameChange}  >Edit Name</button>
-            </div> }
+            </div>
+            }
             <h2 className="sr-only">Accounts</h2>
+        { selectorToken !== "" ? <>
             <section className="account">
                 <div className="account-content-wrapper">
                     <h3 className="account-title">Argent Bank Checking (x8349)</h3>
@@ -63,7 +66,10 @@ function User() {
                     <button className="transaction-button">View transactions</button>
                 </div>
             </section>
-      </main>
+            </> : ("") 
+          }
+      </main> 
+      
 
     )
 }
