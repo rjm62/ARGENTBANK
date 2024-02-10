@@ -1,8 +1,8 @@
-// import { configureStore } from "@reduxjs/toolkit";
-// import { userReducer } from "react";
+import { configureStore } from "@reduxjs/toolkit";
+import { userReducer } from "./reducers";
 
-
-
-// export const store= configureStore({
-//     reducer: {user: titi}
-// });
+export const store= configureStore({
+ reducer: {
+         user: userReducer
+}
+});

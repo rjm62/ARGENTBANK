@@ -2,13 +2,15 @@ import '../../style/main.css'
 import '../../style/Form.css'
 import Form from '../../components/Form/Form'
 import { useEffect, useState } from 'react'
+import { Navigate } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
-import { userFirstName, userLastName, userToken, userLogin } from '../../redux/reducers'
+import { userLogin } from '../../redux/reducers'
 
 function User() {
     const [profileChange, setProfileChange] = useState("off")
     const [prenom, setPrenom] = useState("")
     const [nom, setNom] = useState("")
+    const [alertDisplay, setAlertDisplay] = useState("off")
     const selectorFirstName = useSelector((state) => state.user.firstName)
     const selectorLastName = useSelector((state) =>state.user.lastName)
     const selectorToken = useSelector((state) => state.user.token )
@@ -25,7 +27,7 @@ function User() {
         setProfileChange("on")
         dispatch(userLogin("out"))
     }
-
+  
     return (
         <main className="main bg-dark">,
           {  profileChange==="on" ? <Form /> :  
@@ -66,7 +68,10 @@ function User() {
                     <button className="transaction-button">View transactions</button>
                 </div>
             </section>
-            </> : ("") 
+            </> : 
+            <div>
+                <Navigate to='/' />
+            </div>
           }
       </main> 
       

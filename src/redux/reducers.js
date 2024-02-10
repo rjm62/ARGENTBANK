@@ -30,8 +30,4 @@ export const userSlice = createSlice({
 
 export const {userToken, userFirstName, userLastName, userLogin} = userSlice.actions;
 
-export const store= configureStore({
-    reducer: {
-        user:userSlice.reducer
-    }
-});
+export const userReducer =userSlice.reducer

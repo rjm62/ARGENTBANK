@@ -2,22 +2,24 @@ import { Link } from 'react-router-dom'
 import argentBankLogo from '../../assets/images/argentBankLogo.png'
 import { useEffect, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-// import User from '../../pages/User/User'
-// import { useSelector, useDispatch} from 'react-redux'
-import { userLogin, userFirstName, userLastName } from '../../redux/reducers'
+import { userFirstName } from '../../redux/reducers'
 
 function Header() {
-  const [changeLogin, setChangeLogin] = useState("in")
+  // 2 constantes, pour récupérer état du login ou pour le modifier
+  const [loginInOrOut, setLoginInOrOut] = useState("in")
   const selector = useSelector((state) => state.user.login)
-  const dispatch = useDispatch
+  const selectorFirstName = useSelector((state) =>state.user.firstName)
+  const dispatch = useDispatch()
 
-
+  // si dessous fonction qui va changer valeur de changeLogin si clic sur loginOut ou logo
   const modifyLogin = () => {
-  setChangeLogin("in")
+  setLoginInOrOut("in")
+  dispatch(userFirstName(""))
   }
 
+  // useEffect ci dessous va permettre de changer la valeur du change Login si user.login change
   useEffect(() => {
-  setChangeLogin(selector)
+  setLoginInOrOut(selector)
   },[selector])
 
     return (
@@ -31,13 +33,15 @@ function Header() {
         <h1 className="sr-only">Argent Bank</h1>
       </Link>
       <div>
-        {changeLogin==="in" ?
+        {loginInOrOut==="in" ?
         <Link className="main-nav-item" to = "/sign-in">
           <i className="fa fa-user-circle"></i>
+          <strong>&nbsp;&nbsp;&nbsp;{selectorFirstName}</strong>
           <i className='fa fa-sign-in'>&nbsp;&nbsp;&nbsp;Sign In</i>
         </Link> :
         <Link className="main-nav-item" onClick={modifyLogin} to = "/">
         <i className="fa fa-user-circle"></i>
+        <strong>&nbsp;&nbsp;&nbsp;{selectorFirstName}</strong>
         <i className='fa fa-sign-out'>&nbsp;&nbsp;&nbsp;Sign Out</i>
       </Link>}
       </div>

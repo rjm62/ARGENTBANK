@@ -1,6 +1,6 @@
 import {BrowserRouter as Router, Route, Routes} from 'react-router-dom';
 import {Provider} from 'react-redux'
-import {store} from './redux/reducers'
+import {store} from './redux/store'
 import HomePage from './pages/HomePage/HomePage';
 import SignIn from './pages/SignIn/SignIn'
 import User from './pages/User/User'
